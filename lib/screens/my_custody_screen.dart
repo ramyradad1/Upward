@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../services/asset_service.dart';
 import '../services/profile_service.dart';
 import '../models/asset_model.dart';
@@ -14,50 +15,12 @@ class MyCustodyScreen extends StatefulWidget {
 }
 
 class _MyCustodyScreenState extends State<MyCustodyScreen> {
-  List<AssetModel> _myAssets = [];
-  bool _isLoading = true;
+  late Future<Map<String, dynamic>?> _profileFuture;
 
   @override
   void initState() {
     super.initState();
-    _loadMyAssets();
-  }
-
-  Future<void> _loadMyAssets() async {
-    try {
-      final profile = await ProfileService.getCurrentProfile();
-      if (profile == null) {
-        if (mounted) {
-          setState(() => _isLoading = false);
-        }
-        return;
-      }
-
-      final userName = profile['name'] ?? profile['email'];
-      final assets = await AssetService.getAssets();
-
-      if (mounted) {
-        setState(() {
-          // Filter assets assigned to current user
-          _myAssets = assets.where((a) => 
-            a.assignedTo != null && 
-            a.assignedTo!.toLowerCase() == userName.toString().toLowerCase()
-          ).toList();
-          _isLoading = false;
-        });
-      }
-    } catch (e) {
-      debugPrint('Error loading my assets: $e');
-      if (mounted) {
-        setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error loading assets: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
+    _profileFuture = ProfileService.getCurrentProfile();
   }
 
   @override
@@ -68,15 +31,52 @@ class _MyCustodyScreenState extends State<MyCustodyScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _myAssets.isEmpty
-              ? _buildEmptyState()
-              : ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: _myAssets.length,
-                  itemBuilder: (context, index) => _buildAssetCard(_myAssets[index]),
-                ),
+      body: FutureBuilder<Map<String, dynamic>?>(
+        future: _profileFuture,
+        builder: (context, profileSnapshot) {
+          if (profileSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final profile = profileSnapshot.data;
+          if (profile == null) {
+            return const Center(
+              child: Text('User profile not found. Please login again.'),
+            );
+          }
+
+          final userName = profile['name'] ?? profile['email'];
+          if (userName == null) {
+            return const Center(child: Text('User identity missing.'));
+          }
+
+          return StreamBuilder<List<AssetModel>>(
+            stream: AssetService.getAssetsStreamForUser(userName.toString()),
+            builder: (context, assetSnapshot) {
+              if (assetSnapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (assetSnapshot.hasError) {
+                return Center(child: Text('Error: ${assetSnapshot.error}'));
+              }
+
+              final myAssets = assetSnapshot.data ?? [];
+
+              if (myAssets.isEmpty) {
+                return _buildEmptyState();
+              }
+
+              return ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: myAssets.length,
+                itemBuilder: (context, index) =>
+                    _buildAssetCard(myAssets[index]),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -132,12 +132,20 @@ class _MyCustodyScreenState extends State<MyCustodyScreen> {
                   // Asset Image
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      asset.imageUrl,
+                    child: CachedNetworkImage(
+                      imageUrl: asset.imageUrl,
                       width: 80,
                       height: 80,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
+                      placeholder: (context, url) => Container(
+                        width: 80,
+                        height: 80,
+                        color: Colors.grey[200],
+                        child: const Center(
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Container(
                         width: 80,
                         height: 80,
                         color: Colors.grey[200],

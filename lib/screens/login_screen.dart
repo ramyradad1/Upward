@@ -482,8 +482,9 @@ class _LoginScreenState extends State<LoginScreen>
                                               ) {
                                                 if (states.contains(
                                                   WidgetState.pressed,
-                                                ))
+                                                )) {
                                                   return 2;
+                                                }
                                         return 8;
                                       }),
                                     ),

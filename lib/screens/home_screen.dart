@@ -355,9 +355,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     emailController.text.trim(),
                     passwordController.text.trim(),
                   );
-                  if (response.session != null && mounted) {
-                    Navigator.pop(ctx);
-                     context.push('/admin');
+                  if (response.session != null) {
+                    if (ctx.mounted) Navigator.pop(ctx);
+                    if (mounted) context.push('/admin');
                   }
                 } catch (e) {
                    // Error handling

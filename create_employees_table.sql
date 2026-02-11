@@ -23,3 +23,6 @@ CREATE POLICY "Allow authenticated insert" ON public.employees
 -- Allow authenticated users to update/delete
 CREATE POLICY "Allow authenticated update" ON public.employees
     FOR UPDATE USING (auth.role() = 'authenticated');
+
+-- 4. Create index on foreign key for performance
+CREATE INDEX IF NOT EXISTS idx_employees_company_id ON public.employees(company_id);

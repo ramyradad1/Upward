@@ -190,7 +190,6 @@ final router = GoRouter(
 
     // No redirect needed
     return null;
-    return null;
   },
   refreshListenable: GoRouterRefreshStream(
     SupabaseService.client.auth.onAuthStateChange,

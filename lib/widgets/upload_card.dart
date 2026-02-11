@@ -136,7 +136,7 @@ class UploadCard extends StatelessWidget {
           CachedNetworkImage(
             imageUrl: imageUrl!,
             fit: BoxFit.cover,
-            placeholder: (_, __) => Container(
+            placeholder: (context, url) => Container(
               color: AppTheme.inputFill(context),
               child: Center(
                 child: CircularProgressIndicator(
@@ -145,10 +145,13 @@ class UploadCard extends StatelessWidget {
                 ),
               ),
             ),
-            errorWidget: (_, __, ___) => Container(
+            errorWidget: (context, url, error) => Container(
               color: AppTheme.inputFill(context),
-              child: Icon(Icons.image_not_supported_outlined,
-                  color: AppTheme.iconColor(context), size: 32),
+              child: Icon(
+                Icons.image_not_supported_outlined,
+                color: AppTheme.iconColor(context),
+                size: 32,
+              ),
             ),
           ),
         // Edit overlay

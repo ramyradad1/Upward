@@ -250,12 +250,14 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> with SingleTick
   Widget _buildAppBar(BuildContext context) {
     return SliverAppBar(
       pinned: true,
-      backgroundColor: AppTheme.backgroundDark.withOpacity(0.95), // Slight transparency
+      backgroundColor: AppTheme.backgroundDark.withValues(
+        alpha: 0.95,
+      ), // Slight transparency
       elevation: 0,
       leading: Padding(
         padding: const EdgeInsets.all(8.0),
         child: CircleAvatar(
-          backgroundColor: Colors.white.withOpacity(0.1),
+          backgroundColor: Colors.white.withValues(alpha: 0.1),
           child: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
             onPressed: () {
@@ -292,14 +294,17 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> with SingleTick
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [AppTheme.primaryColor, AppTheme.primaryColor.withOpacity(0.7)],
+                  colors: [
+                    AppTheme.primaryColor,
+                    AppTheme.primaryColor.withValues(alpha: 0.7),
+                  ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: AppTheme.primaryColor.withOpacity(0.3),
+                    color: AppTheme.primaryColor.withValues(alpha: 0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -607,7 +612,8 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> with SingleTick
                   child: CachedNetworkImage(
                     imageUrl: url,
                     fit: BoxFit.cover,
-                    placeholder: (_, __) => Container(color: AppTheme.inputFill(context)),
+                    placeholder: (context, url) =>
+                        Container(color: AppTheme.inputFill(context)),
                   ),
                 ),
               ),
@@ -1164,7 +1170,7 @@ class _InteractableImage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
+                    color: Colors.black.withValues(alpha: 0.15),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   ),
@@ -1198,9 +1204,9 @@ class _InteractableImage extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.6),
+                color: Colors.black.withValues(alpha: 0.6),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.white.withOpacity(0.2)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
                 boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 4)],
               ),
               child: Row(
@@ -1238,12 +1244,14 @@ class _SectionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.shadowColor(context).withOpacity(0.05),
+            color: AppTheme.shadowColor(context).withValues(alpha: 0.05),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
         ],
-        border: Border.all(color: AppTheme.borderColor(context).withOpacity(0.5)),
+        border: Border.all(
+          color: AppTheme.borderColor(context).withValues(alpha: 0.5),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1253,7 +1261,7 @@ class _SectionCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withOpacity(0.1),
+                  color: AppTheme.primaryColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(icon, size: 18, color: AppTheme.primaryColor),

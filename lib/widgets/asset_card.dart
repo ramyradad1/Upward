@@ -101,7 +101,7 @@ class _AssetCardState extends State<AssetCard>
                                   imageUrl: widget.asset.imageUrl,
                                   fit: BoxFit.cover, // Ensures the image covers the available space
                                   memCacheWidth: 400, // Increased cache width since image can be larger
-                                  placeholder: (_, __) => Container(
+                                placeholder: (context, url) => Container(
                                     width: 72, 
                                     height: 72, // Default size while loading
                                     decoration: BoxDecoration(
@@ -116,7 +116,7 @@ class _AssetCardState extends State<AssetCard>
                                         color: AppTheme.iconColor(context),
                                         size: 28),
                                   ),
-                                  errorWidget: (_, __, ___) => Container(
+                                errorWidget: (context, url, error) => Container(
                                     width: 72,
                                     height: 72,
                                     alignment: Alignment.center,

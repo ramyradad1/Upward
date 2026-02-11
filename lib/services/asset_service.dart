@@ -6,13 +6,22 @@ import 'profile_service.dart';
 class AssetService {
   static const String _tableName = 'assets';
 
-  // Fetch all assets stream
-  static Stream<List<AssetModel>> getAssetsStream({String? filter}) {
-    dynamic query = SupabaseService.client.from(_tableName).stream(primaryKey: ['id']);
+  // Fetch all assets stream (Filtered by Company)
+  static Stream<List<AssetModel>> getAssetsStream({String? filter}) async* {
+    final profile = await ProfileService.getCurrentProfile();
+    final companyId = profile?['company_id'];
+
+    if (companyId == null) {
+      yield [];
+      return;
+    }
+
+    dynamic query = SupabaseService.client
+        .from(_tableName)
+        .stream(primaryKey: ['id'])
+        .eq('company_id', companyId);
     
     if (filter != null && filter != 'All Assets') {
-      // Note: supbabase_flutter streams have limited filtering capabilities compared to select().
-      // Simple eq filters are supported.
       String statusFilter;
       switch (filter) {
         case 'In Stock':
@@ -32,9 +41,24 @@ class AssetService {
       }
     }
     
-    return (query.order('created_at', ascending: false) as Stream<List<Map<String, dynamic>>>).map<List<AssetModel>>((list) => 
-      list.map((json) => AssetModel.fromJson(json)).toList()
-    );
+    yield* (query.order('created_at', ascending: false)
+            as Stream<List<Map<String, dynamic>>>)
+        .map<List<AssetModel>>(
+          (list) => list.map((json) => AssetModel.fromJson(json)).toList(),
+        );
+  }
+
+  // Fetch assets specific to a user (Server-side filtering)
+  static Stream<List<AssetModel>> getAssetsStreamForUser(String userId) {
+    // We rely on RLS but adding .eq for performance and clarity
+    return SupabaseService.client
+        .from(_tableName)
+        .stream(primaryKey: ['id'])
+        .eq('assigned_to', userId)
+        .order('created_at', ascending: false)
+        .map<List<AssetModel>>(
+          (list) => list.map((json) => AssetModel.fromJson(json)).toList(),
+        );
   }
 
   // Fetch assets by location stream
@@ -49,10 +73,18 @@ class AssetService {
         );
   }
 
-  // Fetch all assets (Future - Kept for reference or specific use cases)
+  // Fetch all assets (Future) - Now filters by Company ID
   static Future<List<AssetModel>> getAssets({String? filter}) async {
     try {
-      var query = SupabaseService.client.from(_tableName).select();
+      final profile = await ProfileService.getCurrentProfile();
+      final companyId = profile?['company_id'];
+
+      if (companyId == null) return [];
+
+      var query = SupabaseService.client
+          .from(_tableName)
+          .select()
+          .eq('company_id', companyId);
       
       if (filter != null && filter != 'All Assets') {
         String statusFilter;

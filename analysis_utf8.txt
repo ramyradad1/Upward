@@ -1,0 +1,31 @@
+﻿Analyzing lib...
+
+warning - router.dart:193:5 - Dead code. Try removing the code, or fixing the code before it so that it can be reached. - dead_code
+   info - screens\asset_details_screen.dart:253:48 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens\asset_details_screen.dart:258:41 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens\asset_details_screen.dart:295:73 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens\asset_details_screen.dart:302:50 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens\asset_details_screen.dart:610:38 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - screens\asset_details_screen.dart:1167:41 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens\asset_details_screen.dart:1201:37 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens\asset_details_screen.dart:1203:56 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens\asset_details_screen.dart:1241:50 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens\asset_details_screen.dart:1246:65 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens\asset_details_screen.dart:1256:48 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens\home_screen.dart:359:35 - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check. Guard a 'State.context' use with a 'mounted' check on the State, and other BuildContext use with a 'mounted' check on the BuildContext. - use_build_context_synchronously
+   info - screens\location_details_screen.dart:339:46 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - screens\location_details_screen.dart:340:46 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - screens\location_details_screen.dart:340:50 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - screens\login_screen.dart:486:51 - Statements in an if should be enclosed in a block. Try wrapping the statement in a block. - curly_braces_in_flow_control_structures
+   info - widgets\animated_app_logo.dart:86:48 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - widgets\animated_app_logo.dart:89:46 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - widgets\animated_app_logo.dart:92:50 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - widgets\animated_app_logo.dart:115:44 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - widgets\asset_card.dart:104:52 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - widgets\asset_card.dart:119:52 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - widgets\asset_card.dart:119:56 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - widgets\upload_card.dart:139:30 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - widgets\upload_card.dart:148:30 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - widgets\upload_card.dart:148:34 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+
+27 issues found.

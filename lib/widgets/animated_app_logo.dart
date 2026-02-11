@@ -83,7 +83,7 @@ class _AnimatedAppLogoState extends State<AnimatedAppLogo>
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: AppTheme.primaryColor.withOpacity(0.5),
+                  color: AppTheme.primaryColor.withValues(alpha: 0.5),
                   width: 2,
                 ),
                 color: AppTheme.primaryColor.withOpacity(0.1),
