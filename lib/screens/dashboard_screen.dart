@@ -749,10 +749,13 @@ class _DashboardScreenState extends State<DashboardScreen>
 
                             return GridView.builder(
                               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 400,
-                                mainAxisExtent: 180,
+                                    maxCrossAxisExtent:
+                                        350, // Slightly reduced to fit more cols
+                                    mainAxisExtent:
+                                        170, // Fixed height for consistency
                                 crossAxisSpacing: 16,
                                 mainAxisSpacing: 16,
+                                    childAspectRatio: 1.5, // Fallback
                               ),
                               itemCount: filteredAssets.length,
                               itemBuilder: (context, index) {
@@ -942,90 +945,80 @@ class _AnimatedBlobsState extends State<_AnimatedBlobs>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        // Blob 1 (Top Left)
-        AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            return Positioned(
+    // RepaintBoundary is already applied in the parent, but we can optimize the builder
+    // to rebuild less frequently if possible, or just ensure the painting is cheap.
+    // The main issue with blobs is usually the spread overlap and transparency.
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Stack(
+          children: [
+            // Blob 1 (Top Left)
+            Positioned(
               top: -100 + (_controller.value * 20),
               left: -100 + (_controller.value * 10),
               child: Transform.scale(
                 scale: 1.0 + (_controller.value * 0.1),
-                child: Container(
+                child: _buildBlob(
                   width: 400,
                   height: 400,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [
-                        AppTheme.primaryColor
-                            .withValues(alpha: widget.isDark ? 0.08 : 0.15),
-                        AppTheme.primaryColor.withValues(alpha: 0),
-                      ],
-                    ),
-                  ),
+                  color: AppTheme.primaryColor,
+                  opacity: widget.isDark ? 0.08 : 0.15,
                 ),
               ),
-            );
-          },
-        ),
-        // Blob 2 (Top Right)
-        AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            return Positioned(
+            ),
+            // Blob 2 (Top Right)
+            Positioned(
               top: 200 - (_controller.value * 30),
               right: -150 + (_controller.value * 20),
               child: Transform.scale(
                 scale: 1.0 + ((1 - _controller.value) * 0.1),
-                child: Container(
+                child: _buildBlob(
                   width: 350,
                   height: 350,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [
-                        AppTheme.accentColor
-                            .withValues(alpha: widget.isDark ? 0.05 : 0.1),
-                        AppTheme.accentColor.withValues(alpha: 0),
-                      ],
-                    ),
-                  ),
+                  color: AppTheme.accentColor,
+                  opacity: widget.isDark ? 0.05 : 0.1,
                 ),
               ),
-            );
-          },
-        ),
-        // Blob 3 (Bottom Left)
-        AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            return Positioned(
+            ),
+            // Blob 3 (Bottom Left)
+            Positioned(
               bottom: -80 + (_controller.value * 40),
               left: -50 - (_controller.value * 10),
               child: Transform.scale(
                 scale: 1.0 + (_controller.value * 0.15),
-                child: Container(
+                child: _buildBlob(
                   width: 300,
                   height: 300,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [
-                        AppTheme.primaryLight
-                            .withValues(alpha: widget.isDark ? 0.05 : 0.1),
-                        AppTheme.primaryLight.withValues(alpha: 0),
-                      ],
-                    ),
-                  ),
+                  color: AppTheme.primaryLight,
+                  opacity: widget.isDark ? 0.05 : 0.1,
                 ),
               ),
-            );
-          },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildBlob({
+    required double width,
+    required double height,
+    required Color color,
+    required double opacity,
+  }) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: RadialGradient(
+          colors: [
+            color.withValues(alpha: opacity),
+            color.withValues(alpha: 0),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

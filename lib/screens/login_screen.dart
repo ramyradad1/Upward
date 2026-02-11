@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../utils/responsive_layout.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
@@ -117,7 +118,214 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   Widget build(BuildContext context) {
     final isDark = AppTheme.isDark(context);
+    final isDesktop =
+        ResponsiveLayout.isDesktop(context) ||
+        ResponsiveLayout.isTablet(context);
 
+    if (isDesktop) {
+      return Scaffold(
+        body: Row(
+          children: [
+            // Left Panel: Branding & Animations
+            Expanded(
+              flex: 1,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  // Background
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: AppTheme.backgroundGradient(context),
+                    ),
+                  ),
+                  RepaintBoundary(child: _AnimatedBackground(isDark: isDark)),
+                  // Branding Content
+                  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ScaleTransition(
+                          scale: _logoScale,
+                          child: AnimatedBuilder(
+                            animation: _breathingController,
+                            builder: (context, child) {
+                              return Transform.scale(
+                                scale:
+                                    1.0 + (_breathingController.value * 0.05),
+                                child: Container(
+                                  width: 250,
+                                  height: 250,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: isDark
+                                        ? const Color(0xFF1E1E2C)
+                                        : Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: AppTheme.primaryColor.withValues(
+                                          alpha: 0.15,
+                                        ),
+                                        blurRadius: 40,
+                                        spreadRadius: 0,
+                                        offset: const Offset(0, 10),
+                                      ),
+                                    ],
+                                  ),
+                                  padding: const EdgeInsets.all(40),
+                                  child: ClipOval(
+                                    child: Image.asset(
+                                      isDark
+                                          ? 'assets/images/WhiteLogo.png'
+                                          : 'assets/images/BlackLogo.png',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+                        Text(
+                          AppLocalizations.of(context)!.appTitle,
+                          style: TextStyle(
+                            fontSize: 42,
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.textPrimary(context),
+                            letterSpacing: -1.0,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          AppLocalizations.of(context)!.loginSubtitle,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: AppTheme.textSecondary(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Right Panel: Login Form
+            Expanded(
+              flex: 1,
+              child: Container(
+                color: isDark ? AppTheme.surfaceColor(context) : Colors.white,
+                child: Center(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(48),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 450),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            'Welcome Back!',
+                            style: TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.textPrimary(context),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Please sign in to continue.',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: AppTheme.textSecondary(context),
+                            ),
+                          ),
+                          const SizedBox(height: 48),
+                          // Form Container (Reused style or simplified for split screen)
+                          // For split screen, we might not need the glass container, just the fields.
+                          CustomTextField(
+                            label: AppLocalizations.of(context)!.emailLabel,
+                            placeholder: 'name@company.com',
+                            icon: Icons.email_outlined,
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                          ),
+                          const SizedBox(height: 20),
+                          CustomTextField(
+                            label: AppLocalizations.of(context)!.passwordLabel,
+                            placeholder: '••••••••',
+                            icon: Icons.lock_outline_rounded,
+                            controller: _passwordController,
+                            isPassword: true,
+                          ),
+                          const SizedBox(height: 40),
+                          SizedBox(
+                            height: 56,
+                            child: ElevatedButton(
+                              onPressed: _isLoading ? null : _signIn,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppTheme.primaryColor,
+                                foregroundColor: Colors.white,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              child: _isLoading
+                                  ? const SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                        strokeWidth: 2.5,
+                                      ),
+                                    )
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          AppLocalizations.of(
+                                            context,
+                                          )!.loginButton,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        const Icon(
+                                          Icons.arrow_forward_rounded,
+                                          size: 20,
+                                        ),
+                                      ],
+                                    ),
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          Center(
+                            child: Text(
+                              'v1.1.0',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: AppTheme.textSecondary(
+                                  context,
+                                ).withValues(alpha: 0.5),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Mobile Layout (Existing)
     return Scaffold(
       body: Stack(
         children: [

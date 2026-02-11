@@ -637,10 +637,13 @@ class _ScheduleDetailSheet extends StatelessWidget {
         minChildSize: 0.4,
         expand: false,
         builder: (context, scrollController) {
-          return ListView(
-            controller: scrollController,
-            padding: const EdgeInsets.all(24),
-            children: [
+          return Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 600),
+              child: ListView(
+                controller: scrollController,
+                padding: const EdgeInsets.all(24),
+                children: [
               // Handle bar
               Center(
                 child: Container(
@@ -733,6 +736,8 @@ class _ScheduleDetailSheet extends StatelessWidget {
                 ],
               ),
             ],
+              ),
+            ),
           );
         },
       ),

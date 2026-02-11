@@ -48,14 +48,16 @@ class _AnimatedAppLogoState extends State<AnimatedAppLogo>
     return SizedBox(
       width: widget.size * 2, // Extra space for ripples
       height: widget.size * 2,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          _buildRipple(0),
-          _buildRipple(1),
-          _buildRipple(2),
-          _buildLogo(),
-        ],
+      child: RepaintBoundary(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            _buildRipple(0),
+            _buildRipple(1),
+            _buildRipple(2),
+            _buildLogo(),
+          ],
+        ),
       ),
     );
   }
@@ -88,8 +90,8 @@ class _AnimatedAppLogoState extends State<AnimatedAppLogo>
                 boxShadow: [
                   BoxShadow(
                     color: AppTheme.primaryColor.withOpacity(0.2),
-                    blurRadius: 20,
-                    spreadRadius: 5,
+                    blurRadius: 10, // Reduced from 20
+                    spreadRadius: 2, // Reduced from 5
                   )
                 ],
               ),
@@ -111,8 +113,8 @@ class _AnimatedAppLogoState extends State<AnimatedAppLogo>
           boxShadow: [
             BoxShadow(
               color: AppTheme.primaryColor.withOpacity(0.4),
-              blurRadius: 30,
-              spreadRadius: 5,
+              blurRadius: 15, // Reduced from 30
+              spreadRadius: 2, // Reduced from 5
             ),
           ],
         ),
