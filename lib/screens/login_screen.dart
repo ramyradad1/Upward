@@ -207,6 +207,16 @@ class _LoginScreenState extends State<LoginScreen>
                               color: AppTheme.textSecondary(context),
                             ),
                           ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'v1.1.0',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.textSecondary(
+                                context,
+                              ).withValues(alpha: 0.5),
+                            ),
+                          ),
                           const SizedBox(height: 40),
 
                           // Form Container
