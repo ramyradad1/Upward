@@ -11,6 +11,7 @@ import '../services/notification_service.dart';
 import '../services/auth_service.dart';
 import '../widgets/analytics_widgets.dart';
 import '../widgets/hover_scale.dart';
+import '../services/profile_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -52,12 +53,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   Future<void> _loadStats() async {
     try {
+      // Fetch profile first to avoid 5x redundant calls
+      final profile = await ProfileService.getCurrentProfile();
+      final companyId = profile?['company_id'];
+
       final results = await Future.wait([
-        AnalyticsService.getTotalAssets(),
-        AnalyticsService.getRequestStats(),
-        MaintenanceService.getMaintenanceStats(),
-        AnalyticsService.getAssetsByStatus(),
-        AnalyticsService.getAssetsByCategory(),
+        AnalyticsService.getTotalAssets(companyId: companyId),
+        AnalyticsService.getRequestStats(companyId: companyId),
+        MaintenanceService.getMaintenanceStats(companyId: companyId),
+        AnalyticsService.getAssetsByStatus(companyId: companyId),
+        AnalyticsService.getAssetsByCategory(companyId: companyId),
       ]);
 
       if (mounted) {

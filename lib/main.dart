@@ -10,6 +10,7 @@ import 'services/connectivity_service.dart';
 
 import 'router.dart';
 import 'theme/app_theme.dart';
+import 'screens/splash_screen.dart';
 
 // Global theme provider instance
 final themeProvider = ThemeProvider();
@@ -58,16 +59,64 @@ class ThemeProvider extends ChangeNotifier {
   }
 }
 
-void main() async {
+
+
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await SupabaseService.initialize();
-  await OfflineService.init();
-  await ConnectivityService.init();
   runApp(
     Phoenix(
-      child: const MyApp(),
+      child: const AppRoot(),
     ),
   );
+}
+
+class AppRoot extends StatefulWidget {
+  const AppRoot({super.key});
+
+  @override
+  State<AppRoot> createState() => _AppRootState();
+}
+
+class _AppRootState extends State<AppRoot> {
+  bool _isInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    try {
+      await SupabaseService.initialize();
+      await Future.wait([
+        OfflineService.init(),
+        ConnectivityService.init(),
+        // Minimum delay to ensure logo is seen and transition is smooth
+        Future.delayed(const Duration(milliseconds: 1500)),
+      ]);
+    } catch (e) {
+      debugPrint('Initialization error: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isInitialized = true;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_isInitialized) {
+      return const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: SplashScreen(),
+      );
+    }
+
+    return const MyApp();
+  }
 }
 
 class MyApp extends StatefulWidget {

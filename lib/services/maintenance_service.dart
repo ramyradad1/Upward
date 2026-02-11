@@ -218,11 +218,14 @@ class MaintenanceService {
   // ═══════════════════════════════════════════════════════════════
 
   /// Get maintenance statistics for analytics
-  static Future<Map<String, dynamic>> getMaintenanceStats() async {
+  static Future<Map<String, dynamic>> getMaintenanceStats({
+    String? companyId,
+  }) async {
     try {
-      final profile = await ProfileService.getCurrentProfile();
-      if (profile == null) return {};
-
+      final targetCompanyId =
+          companyId ??
+          (await ProfileService.getCurrentProfile())?['company_id'];
+      if (targetCompanyId == null) return {};
 
 
       var schedQuery = SupabaseService.client
@@ -232,11 +235,11 @@ class MaintenanceService {
           
       var logsQuery = SupabaseService.client
           .from(_logsTable)
-          .select();
+          .select('cost'); // Only need cost
 
-      if (profile['company_id'] != null) {
-        schedQuery = schedQuery.eq('company_id', profile['company_id']);
-        logsQuery = logsQuery.eq('company_id', profile['company_id']);
+      if (targetCompanyId != null) {
+        schedQuery = schedQuery.eq('company_id', targetCompanyId);
+        logsQuery = logsQuery.eq('company_id', targetCompanyId);
       }
 
       final schedules = await schedQuery;

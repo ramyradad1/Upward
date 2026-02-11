@@ -24,18 +24,15 @@ class AnalyticsService {
   }
 
   /// Get asset count by status
-  static Future<Map<String, int>> getAssetsByStatus() async {
+  static Future<Map<String, int>> getAssetsByStatus({String? companyId}) async {
     try {
-      final profile = await ProfileService.getCurrentProfile();
-      // If no profile or no company_id, try fetching globally (or return empty for safety)
-      // For the user request "show all site data", we will assume if no company_id, specific permissions might allow all
-      // BUT simpler: just filter by company_id IF present. If user is super admin, logic might differ.
-      // For now, let's keep it safe. If no company_id, we can't filter.
-      // Let's assume the user IS logged in.
-
-      var query = SupabaseService.client.from(_assetsTable).select();
-      if (profile != null && profile['company_id'] != null) {
-        query = query.eq('company_id', profile['company_id']);
+      final targetCompanyId =
+          companyId ??
+          (await ProfileService.getCurrentProfile())?['company_id'];
+      
+      var query = SupabaseService.client.from(_assetsTable).select('status');
+      if (targetCompanyId != null) {
+        query = query.eq('company_id', targetCompanyId);
       }
 
       final response = await query;
@@ -58,13 +55,17 @@ class AnalyticsService {
   }
 
   /// Get asset count by category
-  static Future<Map<String, int>> getAssetsByCategory() async {
+  static Future<Map<String, int>> getAssetsByCategory({
+    String? companyId,
+  }) async {
     try {
-      final profile = await ProfileService.getCurrentProfile();
+      final targetCompanyId =
+          companyId ??
+          (await ProfileService.getCurrentProfile())?['company_id'];
       
-      var query = SupabaseService.client.from(_assetsTable).select();
-      if (profile != null && profile['company_id'] != null) {
-        query = query.eq('company_id', profile['company_id']);
+      var query = SupabaseService.client.from(_assetsTable).select('category');
+      if (targetCompanyId != null) {
+        query = query.eq('company_id', targetCompanyId);
       }
 
       final response = await query;
@@ -91,13 +92,15 @@ class AnalyticsService {
   }
 
   /// Get request statistics
-  static Future<Map<String, int>> getRequestStats() async {
+  static Future<Map<String, int>> getRequestStats({String? companyId}) async {
     try {
-      final profile = await ProfileService.getCurrentProfile();
+      final targetCompanyId =
+          companyId ??
+          (await ProfileService.getCurrentProfile())?['company_id'];
       
-      var query = SupabaseService.client.from(_requestsTable).select();
-      if (profile != null && profile['company_id'] != null) {
-        query = query.eq('company_id', profile['company_id']);
+      var query = SupabaseService.client.from(_requestsTable).select('status');
+      if (targetCompanyId != null) {
+        query = query.eq('company_id', targetCompanyId);
       }
 
       final response = await query;
@@ -109,13 +112,19 @@ class AnalyticsService {
   }
 
   /// Get total assets count
-  static Future<int> getTotalAssets() async {
+  static Future<int> getTotalAssets({String? companyId}) async {
     try {
-      final profile = await ProfileService.getCurrentProfile();
+      final targetCompanyId =
+          companyId ??
+          (await ProfileService.getCurrentProfile())?['company_id'];
+
+      // Use count instead of fetching IDs if possible, but select('id') is lightweight enough for now
+      // and safer if count isn't exposed directly in this helper without exact syntax.
+      // Ideally: .count(CountOption.exact)
       
       var query = SupabaseService.client.from(_assetsTable).select('id');
-      if (profile != null && profile['company_id'] != null) {
-        query = query.eq('company_id', profile['company_id']);
+      if (targetCompanyId != null) {
+        query = query.eq('company_id', targetCompanyId);
       }
 
       final response = await query;
