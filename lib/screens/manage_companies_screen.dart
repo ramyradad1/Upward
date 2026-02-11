@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../services/company_service.dart';
 import '../theme/app_theme.dart';
-import 'create_company_screen.dart';
+
 
 class ManageCompaniesScreen extends StatefulWidget {
   const ManageCompaniesScreen({super.key});
@@ -268,10 +269,7 @@ class _ManageCompaniesScreenState extends State<ManageCompaniesScreen>
         ),
         child: FloatingActionButton.extended(
           onPressed: () async {
-            await Navigator.push(
-              context,
-              AppTheme.slideRoute(const CreateCompanyScreen()),
-            );
+            await context.push('/admin/companies/create');
             // No need to manually reload, stream handles it
           },
           backgroundColor: Colors.transparent,

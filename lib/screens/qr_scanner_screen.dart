@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:go_router/go_router.dart';
 import '../theme/app_theme.dart';
 import '../services/asset_service.dart';
-import 'asset_details_screen.dart';
 
 class QrScannerScreen extends StatefulWidget {
   const QrScannerScreen({super.key});
@@ -39,11 +39,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
 
       if (asset != null && mounted) {
         // Navigate to asset details
-        await Navigator.push(
-          context,
-          AppTheme.slideRoute(AssetDetailsScreen(asset: asset)),
-        );
-        if (mounted) Navigator.pop(context);
+        context.pushReplacement('/assets/details', extra: asset);
       } else {
         // Try searching by serial number
         final assets = await AssetService.getAssets();
@@ -53,11 +49,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
         );
 
         if (mounted) {
-          await Navigator.push(
-            context,
-            AppTheme.slideRoute(AssetDetailsScreen(asset: assetBySerial)),
-          );
-          if (mounted) Navigator.pop(context);
+          context.pushReplacement('/assets/details', extra: assetBySerial);
         }
       }
     } catch (e) {

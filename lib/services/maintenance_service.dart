@@ -223,18 +223,24 @@ class MaintenanceService {
       final profile = await ProfileService.getCurrentProfile();
       if (profile == null) return {};
 
-      final companyId = profile['company_id'];
 
-      final schedules = await SupabaseService.client
+
+      var schedQuery = SupabaseService.client
           .from(_schedulesTable)
           .select()
-          .eq('company_id', companyId)
           .eq('is_active', true);
-
-      final logs = await SupabaseService.client
+          
+      var logsQuery = SupabaseService.client
           .from(_logsTable)
-          .select()
-          .eq('company_id', companyId);
+          .select();
+
+      if (profile['company_id'] != null) {
+        schedQuery = schedQuery.eq('company_id', profile['company_id']);
+        logsQuery = logsQuery.eq('company_id', profile['company_id']);
+      }
+
+      final schedules = await schedQuery;
+      final logs = await logsQuery;
 
       final scheduleList = schedules as List;
       final logList = logs as List;

@@ -476,8 +476,14 @@ class _LoginScreenState extends State<LoginScreen>
                                       ),
                                       shadowColor: AppTheme.primaryColor.withValues(alpha: 0.4),
                                     ).copyWith(
-                                      elevation: MaterialStateProperty.resolveWith((states) {
-                                        if (states.contains(MaterialState.pressed)) return 2;
+                                          elevation:
+                                              WidgetStateProperty.resolveWith((
+                                                states,
+                                              ) {
+                                                if (states.contains(
+                                                  WidgetState.pressed,
+                                                ))
+                                                  return 2;
                                         return 8;
                                       }),
                                     ),

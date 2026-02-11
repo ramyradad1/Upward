@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import 'hover_scale.dart';
 
 class FilterPill extends StatelessWidget {
   final String label;
@@ -19,8 +20,9 @@ class FilterPill extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(right: 10),
-      child: GestureDetector(
+      child: HoverScale(
         onTap: onTap,
+        scale: 1.05, // Slightly larger scale for pills
         child: AnimatedContainer(
           duration: AppTheme.animNormal,
           curve: Curves.easeOutCubic,

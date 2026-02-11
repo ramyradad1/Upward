@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'dart:async';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 
 import 'services/supabase_service.dart';
 import 'screens/login_screen.dart';
-import 'screens/dashboard_screen.dart';
+import 'screens/home_screen.dart';
+import 'screens/assets_screen.dart';
 import 'screens/maintenance_screen.dart';
 import 'screens/add_maintenance_screen.dart';
 import 'screens/add_asset_screen.dart';
@@ -25,8 +28,12 @@ import 'screens/admin_dashboard_screen.dart';
 import 'screens/manage_companies_screen.dart';
 import 'screens/manage_users_screen.dart';
 import 'screens/create_user_screen.dart';
+import 'screens/create_company_screen.dart';
+import 'screens/audit_screen.dart';
 import 'models/asset_model.dart';
 import 'models/maintenance_model.dart';
+import 'models/location_model.dart';
+import 'screens/location_details_screen.dart';
 
 // GoRouter configuration
 final router = GoRouter(
@@ -42,7 +49,31 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/dashboard',
-      builder: (context, state) => const DashboardScreen(),
+      builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/assets',
+      builder: (context, state) => const AssetsScreen(),
+      routes: [
+        GoRoute(
+          path: 'add',
+          builder: (context, state) => const AddAssetScreen(),
+        ),
+        GoRoute(
+          path: 'edit',
+          builder: (context, state) {
+            final asset = state.extra as AssetModel;
+            return EditAssetScreen(asset: asset);
+          },
+        ),
+        GoRoute(
+          path: 'details',
+          builder: (context, state) {
+            final asset = state.extra as AssetModel;
+            return AssetDetailsScreen(asset: asset);
+          },
+        ),
+      ],
     ),
     GoRoute(
       path: '/maintenance',
@@ -57,24 +88,7 @@ final router = GoRouter(
         ),
       ],
     ),
-    GoRoute(
-      path: '/assets/add',
-      builder: (context, state) => const AddAssetScreen(),
-    ),
-    GoRoute(
-      path: '/assets/edit',
-      builder: (context, state) {
-        final asset = state.extra as AssetModel;
-        return EditAssetScreen(asset: asset);
-      },
-    ),
-    GoRoute(
-      path: '/assets/details', // Query param or extra? Using extra for complex object
-      builder: (context, state) {
-        final asset = state.extra as AssetModel;
-        return AssetDetailsScreen(asset: asset);
-      },
-    ),
+
     GoRoute(
       path: '/requests/create',
       builder: (context, state) => const CreateRequestScreen(),
@@ -90,6 +104,15 @@ final router = GoRouter(
     GoRoute(
       path: '/locations',
       builder: (context, state) => const LocationsScreen(),
+      routes: [
+        GoRoute(
+          path: 'details',
+          builder: (context, state) {
+            final location = state.extra as LocationModel;
+            return LocationDetailsScreen(location: location);
+          },
+        ),
+      ],
     ),
     GoRoute(
       path: '/licenses',
@@ -126,6 +149,12 @@ final router = GoRouter(
         GoRoute(
           path: 'companies',
           builder: (context, state) => const ManageCompaniesScreen(),
+          routes: [
+            GoRoute(
+              path: 'create',
+              builder: (context, state) => const CreateCompanyScreen(),
+            ),
+          ],
         ),
         GoRoute(
           path: 'users',
@@ -139,15 +168,18 @@ final router = GoRouter(
         ),
       ],
     ),
+    GoRoute(
+      path: '/audit/new',
+      builder: (context, state) => const AuditScreen(),
+    ),
   ],
   redirect: (context, state) {
     final session = SupabaseService.client.auth.currentSession;
     final loggingIn = state.uri.toString() == '/login';
     final splash = state.uri.toString() == '/';
 
-    // If no session, redirect to login (unless already there or splash)
+    // If no session, redirect to login (unless already there)
     if (session == null) {
-      if (splash) return null; // Let splash handle initial check if needed, or just redirect
       return loggingIn ? null : '/login';
     }
 
@@ -158,8 +190,29 @@ final router = GoRouter(
 
     // No redirect needed
     return null;
+    return null;
   },
+  refreshListenable: GoRouterRefreshStream(
+    SupabaseService.client.auth.onAuthStateChange,
+  ),
 );
+
+class GoRouterRefreshStream extends ChangeNotifier {
+  GoRouterRefreshStream(Stream<AuthState> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen(
+      (dynamic _) => notifyListeners(),
+    );
+  }
+
+  late final StreamSubscription<dynamic> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}
 
 class _SplashHandler extends StatefulWidget {
   const _SplashHandler();

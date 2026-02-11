@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../services/employee_service.dart';
 import '../services/company_service.dart'; // To get company names
 import '../theme/app_theme.dart';
-import 'create_user_screen.dart';
+
 
 class ManageUsersScreen extends StatefulWidget {
   const ManageUsersScreen({super.key});
@@ -213,10 +214,7 @@ class _ManageUsersScreenState extends State<ManageUsersScreen>
         ),
         child: FloatingActionButton.extended(
           onPressed: () async {
-            await Navigator.push(
-              context,
-              AppTheme.slideRoute(const CreateUserScreen()),
-            );
+            await context.push('/admin/users/create');
           },
           backgroundColor: Colors.transparent,
           elevation: 0,

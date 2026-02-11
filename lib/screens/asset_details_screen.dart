@@ -1,4 +1,5 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -9,7 +10,6 @@ import '../services/encryption_service.dart';
 import '../services/handover_service.dart';
 import '../services/maintenance_service.dart';
 import '../theme/app_theme.dart';
-import 'edit_asset_screen.dart';
 import 'package:intl/intl.dart';
 
 class FullScreenImage extends StatelessWidget {
@@ -232,10 +232,7 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> with SingleTick
         scale: CurvedAnimation(parent: _controller, curve: const Interval(0.6, 1.0, curve: Curves.elasticOut)),
         child: FloatingActionButton.extended(
           onPressed: () {
-            Navigator.push(
-              context,
-              AppTheme.slideRoute(EditAssetScreen(asset: widget.asset)),
-            );
+            context.push('/assets/edit', extra: widget.asset);
           },
           backgroundColor: AppTheme.primaryColor,
           elevation: 4,
@@ -261,7 +258,13 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> with SingleTick
           backgroundColor: Colors.white.withOpacity(0.1),
           child: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                context.go('/dashboard');
+              }
+            },
             color: Colors.white,
             tooltip: 'Back',
           ),

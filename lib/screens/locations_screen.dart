@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../models/location_model.dart';
 import '../services/location_service.dart';
 import '../services/profile_service.dart';
 import '../theme/app_theme.dart';
-import 'location_details_screen.dart';
 
 class LocationsScreen extends StatefulWidget {
   const LocationsScreen({super.key});
@@ -32,12 +32,38 @@ class _LocationsScreenState extends State<LocationsScreen>
     _loadCompanyId();
   }
 
+  bool _isLoadingCompany = true;
+  String? _companyLoadingError;
+
   Future<void> _loadCompanyId() async {
-    final profile = await ProfileService.getCurrentProfile();
-    if (mounted && profile != null) {
-      setState(() {
-        _companyId = profile['company_id'];
-      });
+    setState(() {
+      _isLoadingCompany = true;
+      _companyLoadingError = null;
+    });
+
+    try {
+      final profile = await ProfileService.getCurrentProfile();
+      if (mounted) {
+        if (profile != null && profile['company_id'] != null) {
+          setState(() {
+            _companyId = profile['company_id'];
+            _isLoadingCompany = false;
+          });
+        } else {
+          setState(() {
+            _companyId = null;
+            _isLoadingCompany = false;
+            _companyLoadingError = 'Profile or Company ID not found';
+          });
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoadingCompany = false;
+          _companyLoadingError = 'Failed to load company: $e';
+        });
+      }
     }
   }
 
@@ -497,7 +523,13 @@ class _LocationsScreenState extends State<LocationsScreen>
                                   color: AppTheme.borderColor(context)),
                             ),
                             child: IconButton(
-                              onPressed: () => Navigator.pop(context),
+                              onPressed: () {
+                                if (Navigator.canPop(context)) {
+                                  Navigator.pop(context);
+                                } else {
+                                  context.go('/dashboard');
+                                }
+                              },
                               icon: Icon(
                                   Icons.arrow_back_ios_new_rounded,
                                   color: AppTheme.textPrimary(context),
@@ -579,12 +611,59 @@ class _LocationsScreenState extends State<LocationsScreen>
 
                     // Locations Tree / List
                     Expanded(
-                      child: isLoading
+                      child: _isLoadingCompany
                           ? Center(
                               child: CircularProgressIndicator(
-                                  color: AppTheme.primaryColor))
+                                color: AppTheme.primaryColor,
+                              ),
+                            )
+                          : _companyLoadingError != null
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.error_outline_rounded,
+                                    size: 48,
+                                    color: AppTheme.accentWarm,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    'Failed to load company',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppTheme.textPrimary(context),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    _companyLoadingError!,
+                                    style: TextStyle(
+                                      color: AppTheme.textSecondary(context),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 24),
+                                  ElevatedButton.icon(
+                                    onPressed: _loadCompanyId,
+                                    icon: const Icon(Icons.refresh_rounded),
+                                    label: const Text('Retry'),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppTheme.primaryColor,
+                                      foregroundColor: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : isLoading
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                color: AppTheme.primaryColor,
+                              ),
+                            )
                           : filteredLocations.isEmpty
-                              ? _buildEmptyState()
+                          ? _buildEmptyState()
                               : _searchQuery.isNotEmpty
                                   ? _buildFlatList(filteredLocations)
                                   : _buildTreeView(tree),
@@ -674,10 +753,7 @@ class _LocationsScreenState extends State<LocationsScreen>
                 child: InkWell(
                   borderRadius: BorderRadius.circular(16),
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      AppTheme.slideRoute(LocationDetailsScreen(location: node.location)),
-                    );
+                    context.push('/locations/details', extra: node.location);
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(14),

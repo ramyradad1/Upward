@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/asset_model.dart';
 import '../services/asset_service.dart';
 import '../theme/app_theme.dart';
-import 'asset_details_screen.dart';
+
 
 class MapViewScreen extends StatefulWidget {
   const MapViewScreen({super.key});
@@ -207,12 +208,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => AssetDetailsScreen(asset: asset),
-                    ),
-                  );
+                  context.push('/assets/details', extra: asset);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primaryColor,

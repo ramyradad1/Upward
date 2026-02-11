@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../models/audit_session_model.dart';
 import '../services/audit_service.dart';
 import '../theme/app_theme.dart';
-import 'audit_screen.dart';
+
 
 class AuditHistoryScreen extends StatelessWidget {
   const AuditHistoryScreen({super.key});
@@ -19,10 +20,7 @@ class AuditHistoryScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(
-            context,
-            AppTheme.slideRoute(const AuditScreen()),
-          ).then((_) {
+          context.push('/audit/new').then((_) {
             // Refresh logic potentially handled by StreamBuilder automatically
           });
         },

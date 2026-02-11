@@ -4,6 +4,7 @@ import '../models/maintenance_model.dart';
 import '../services/maintenance_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/animated_app_logo.dart';
+import '../widgets/hover_scale.dart';
 
 
 class MaintenanceScreen extends StatefulWidget {
@@ -83,7 +84,13 @@ class _MaintenanceScreenState extends State<MaintenanceScreen>
         child: Row(
           children: [
             IconButton(
-              onPressed: () => context.pop(),
+              onPressed: () {
+                if (context.canPop()) {
+                  context.pop();
+                } else {
+                  context.go('/dashboard');
+                }
+              },
               icon: Icon(Icons.arrow_back_ios_new_rounded,
                   color: AppTheme.textPrimary(context)),
               style: IconButton.styleFrom(
@@ -315,23 +322,22 @@ class _ScheduleCard extends StatelessWidget {
     final statusCol = _statusColor();
     final daysUntil = schedule.nextDueDate.difference(DateTime.now()).inDays;
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: AppTheme.cardColor(context),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppTheme.borderColor(context)),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.shadowColor(context),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: () => _showScheduleDetails(context),
+    return HoverScale(
+      onTap: () => _showScheduleDetails(context),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        decoration: BoxDecoration(
+          color: AppTheme.cardColor(context),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppTheme.borderColor(context)),
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.shadowColor(context),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -536,13 +542,14 @@ class _LogCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final statusCol = _logStatusColor();
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: AppTheme.cardColor(context),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppTheme.borderColor(context)),
-      ),
+    return HoverScale(
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        decoration: BoxDecoration(
+          color: AppTheme.cardColor(context),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppTheme.borderColor(context)),
+        ),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -608,6 +615,7 @@ class _LogCard extends StatelessWidget {
               ),
           ],
         ),
+      ),
       ),
     );
   }

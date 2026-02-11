@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../models/maintenance_model.dart';
 import '../services/maintenance_service.dart';
 import '../services/asset_service.dart';
@@ -142,7 +143,13 @@ class _AddMaintenanceScreenState extends State<AddMaintenanceScreen>
       child: Row(
         children: [
           IconButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                context.go('/dashboard');
+              }
+            },
             icon: Icon(Icons.arrow_back_ios_new_rounded,
                 color: AppTheme.textPrimary(context)),
             style: IconButton.styleFrom(
@@ -349,7 +356,7 @@ class _AddMaintenanceScreenState extends State<AddMaintenanceScreen>
         border: Border.all(color: AppTheme.inputBorder(context)),
       ),
       child: DropdownButtonFormField<String>(
-        value: _selectedAssetId,
+        initialValue: _selectedAssetId,
         isExpanded: true,
         decoration: InputDecoration(
           labelText: 'Asset (Optional)',
@@ -389,7 +396,7 @@ class _AddMaintenanceScreenState extends State<AddMaintenanceScreen>
         border: Border.all(color: AppTheme.inputBorder(context)),
       ),
       child: DropdownButtonFormField<MaintenanceFrequency>(
-        value: _frequency,
+        initialValue: _frequency,
         isExpanded: true,
         decoration: InputDecoration(
           labelText: 'Frequency',

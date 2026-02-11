@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../services/asset_service.dart';
 import '../services/profile_service.dart';
 import '../models/asset_model.dart';
+
 import '../theme/app_theme.dart';
-import 'asset_details_screen.dart';
-import 'create_request_screen.dart';
 
 class MyCustodyScreen extends StatefulWidget {
   const MyCustodyScreen({super.key});
@@ -94,10 +94,7 @@ class _MyCustodyScreenState extends State<MyCustodyScreen> {
           const SizedBox(height: 24),
           ElevatedButton.icon(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const CreateRequestScreen()),
-              );
+              context.push('/requests/create');
             },
             icon: const Icon(Icons.add_shopping_cart, color: Colors.white),
             label: const Text('Request New Device', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
@@ -122,10 +119,7 @@ class _MyCustodyScreenState extends State<MyCustodyScreen> {
       ),
       child: InkWell(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => AssetDetailsScreen(asset: asset)),
-          );
+          context.push('/assets/details', extra: asset);
         },
         borderRadius: BorderRadius.circular(16),
         child: Padding(
@@ -262,10 +256,7 @@ class _MyCustodyScreenState extends State<MyCustodyScreen> {
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const CreateRequestScreen()),
-              );
+              context.push('/requests/create');
             },
             child: const Text('Create Request'),
           ),
@@ -287,10 +278,7 @@ class _MyCustodyScreenState extends State<MyCustodyScreen> {
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             onPressed: () {
               Navigator.pop(context);
-               Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const CreateRequestScreen()),
-              );
+              context.push('/requests/create');
             },
             child: const Text('Proceed', style: TextStyle(color: Colors.white)),
           ),

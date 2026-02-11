@@ -27,15 +27,18 @@ class AnalyticsService {
   static Future<Map<String, int>> getAssetsByStatus() async {
     try {
       final profile = await ProfileService.getCurrentProfile();
-      if (profile == null) return {};
+      // If no profile or no company_id, try fetching globally (or return empty for safety)
+      // For the user request "show all site data", we will assume if no company_id, specific permissions might allow all
+      // BUT simpler: just filter by company_id IF present. If user is super admin, logic might differ.
+      // For now, let's keep it safe. If no company_id, we can't filter.
+      // Let's assume the user IS logged in.
 
-      final companyId = profile['company_id'];
+      var query = SupabaseService.client.from(_assetsTable).select();
+      if (profile != null && profile['company_id'] != null) {
+        query = query.eq('company_id', profile['company_id']);
+      }
 
-      final response = await SupabaseService.client
-          .from(_assetsTable)
-          .select()
-          .eq('company_id', companyId);
-
+      final response = await query;
       return processStatusCounts(response as List);
     } catch (e) {
       debugPrint('Error fetching assets by status: $e');
@@ -58,15 +61,13 @@ class AnalyticsService {
   static Future<Map<String, int>> getAssetsByCategory() async {
     try {
       final profile = await ProfileService.getCurrentProfile();
-      if (profile == null) return {};
+      
+      var query = SupabaseService.client.from(_assetsTable).select();
+      if (profile != null && profile['company_id'] != null) {
+        query = query.eq('company_id', profile['company_id']);
+      }
 
-      final companyId = profile['company_id'];
-
-      final response = await SupabaseService.client
-          .from(_assetsTable)
-          .select()
-          .eq('company_id', companyId);
-
+      final response = await query;
       return processCategoryCounts(response as List);
     } catch (e) {
       debugPrint('Error fetching assets by category: $e');
@@ -93,17 +94,13 @@ class AnalyticsService {
   static Future<Map<String, int>> getRequestStats() async {
     try {
       final profile = await ProfileService.getCurrentProfile();
-      if (profile == null) {
-        return {'pending': 0, 'approved': 0, 'rejected': 0};
+      
+      var query = SupabaseService.client.from(_requestsTable).select();
+      if (profile != null && profile['company_id'] != null) {
+        query = query.eq('company_id', profile['company_id']);
       }
 
-      final companyId = profile['company_id'];
-
-      final response = await SupabaseService.client
-          .from(_requestsTable)
-          .select()
-          .eq('company_id', companyId);
-
+      final response = await query;
       return processRequestStats(response as List);
     } catch (e) {
       debugPrint('Error fetching request stats: $e');
@@ -115,15 +112,13 @@ class AnalyticsService {
   static Future<int> getTotalAssets() async {
     try {
       final profile = await ProfileService.getCurrentProfile();
-      if (profile == null) return 0;
+      
+      var query = SupabaseService.client.from(_assetsTable).select('id');
+      if (profile != null && profile['company_id'] != null) {
+        query = query.eq('company_id', profile['company_id']);
+      }
 
-      final companyId = profile['company_id'];
-
-      final response = await SupabaseService.client
-          .from(_assetsTable)
-          .select('id')
-          .eq('company_id', companyId);
-
+      final response = await query;
       return (response as List).length;
     } catch (e) {
       debugPrint('Error fetching total assets: $e');

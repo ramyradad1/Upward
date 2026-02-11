@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/asset_model.dart';
 import '../theme/app_theme.dart';
+import 'hover_scale.dart';
 
 class AssetCard extends StatefulWidget {
   final AssetModel asset;
@@ -23,7 +24,6 @@ class AssetCard extends StatefulWidget {
 
 class _AssetCardState extends State<AssetCard>
     with SingleTickerProviderStateMixin {
-  double _scale = 1.0;
 
   Color _statusColor(AssetStatus status) {
     switch (status) {
@@ -57,17 +57,10 @@ class _AssetCardState extends State<AssetCard>
     final statusColor = _statusColor(widget.asset.status);
 
     return RepaintBoundary(
-      child: GestureDetector(
+      child: HoverScale(
         onTap: widget.onTap,
-        onTapDown: (_) => setState(() => _scale = 0.97),
-        onTapUp: (_) => setState(() => _scale = 1.0),
-        onTapCancel: () => setState(() => _scale = 1.0),
-        child: AnimatedScale(
-          scale: _scale,
-          duration: AppTheme.animFast,
-          curve: Curves.easeOut,
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 16),
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 16),
             decoration: BoxDecoration(
               gradient: AppTheme.cardGradient(context),
               borderRadius: BorderRadius.circular(20),
@@ -229,7 +222,6 @@ class _AssetCardState extends State<AssetCard>
                   ),
                 ],
               ),
-            ),
           ),
         ),
       ),

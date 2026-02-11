@@ -15,14 +15,14 @@ import '../services/notification_service.dart';
 import '../l10n/app_localizations.dart';
 
 
-class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+class AssetsScreen extends StatefulWidget {
+  const AssetsScreen({super.key});
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
+  State<AssetsScreen> createState() => _AssetsScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen>
+class _AssetsScreenState extends State<AssetsScreen>
     with TickerProviderStateMixin {
   String _selectedFilter = 'All Assets';
   static const List<String> _filters = [
@@ -465,8 +465,9 @@ class _DashboardScreenState extends State<DashboardScreen>
                                   initialData: 0,
                                   builder: (context, snapshot) {
                                     final count = snapshot.data ?? 0;
-                                    if (count == 0)
+                                    if (count == 0) {
                                       return const SizedBox.shrink();
+                                    }
                                     return Positioned(
                                       top: 0,
                                       right: 0,
@@ -591,19 +592,28 @@ class _DashboardScreenState extends State<DashboardScreen>
                 ).animate(_filterAnim),
                 child: FadeTransition(
                   opacity: _filterAnim,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    clipBehavior: Clip.none,
-                    child: Row(
-                      children: _filters.map((filter) {
-                        return FilterPill(
-                          label: filter,
-                          isSelected: _selectedFilter == filter,
-                          onTap: () => _onFilterChanged(filter),
-                        );
-                      }).toList(),
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Carousel removed - moved to Home
+                      const SizedBox(height: 16),
+                      const SizedBox(height: 16),
+                      // Existing Filters
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        clipBehavior: Clip.none,
+                        child: Row(
+                          children: _filters.map((filter) {
+                            return FilterPill(
+                              label: filter,
+                              isSelected: _selectedFilter == filter,
+                              onTap: () => _onFilterChanged(filter),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

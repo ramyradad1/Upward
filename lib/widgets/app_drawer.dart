@@ -6,6 +6,7 @@ import '../services/company_service.dart';
 import '../services/auth_service.dart';
 
 import '../l10n/app_localizations.dart';
+import 'hover_scale.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
@@ -101,7 +102,7 @@ class _AppDrawerState extends State<AppDrawer>
                         const SizedBox(width: 14),
                         Expanded(
                           child: Text(
-                            AppLocalizations.of(context)!.appTitle,
+                            AppLocalizations.of(context)?.appTitle ?? 'Upward',
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.w700,
@@ -126,6 +127,138 @@ class _AppDrawerState extends State<AppDrawer>
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: [
+                    // Home
+                    SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(-0.3, 0),
+                        end: Offset.zero,
+                      ).animate(_itemAnimation(1)),
+                      child: FadeTransition(
+                        opacity: _itemAnimation(1),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                          child: Material(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(14),
+                            child: HoverScale(
+                              onTap: () {
+                                if (Scaffold.of(context).hasDrawer &&
+                                    Scaffold.of(context).isDrawerOpen) {
+                                  Navigator.pop(context);
+                                }
+                                context.go('/dashboard');
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.glassColor(context),
+                                  borderRadius: BorderRadius.circular(14),
+                                  border: Border.all(
+                                    color: AppTheme.borderColor(context),
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.dashboard_rounded,
+                                      color: AppTheme.primaryColor,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        'Home',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: AppTheme.textPrimary(context),
+                                        ),
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.chevron_right_rounded,
+                                      color: AppTheme.iconColor(context),
+                                      size: 20,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    // Assets
+                    SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(-0.3, 0),
+                        end: Offset.zero,
+                      ).animate(_itemAnimation(1)),
+                      child: FadeTransition(
+                        opacity: _itemAnimation(1),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                          child: Material(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(14),
+                            child: HoverScale(
+                              onTap: () {
+                                if (Scaffold.of(context).hasDrawer &&
+                                    Scaffold.of(context).isDrawerOpen) {
+                                  Navigator.pop(context);
+                                }
+                                context.go('/assets');
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.glassColor(context),
+                                  borderRadius: BorderRadius.circular(14),
+                                  border: Border.all(
+                                    color: AppTheme.borderColor(context),
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.inventory_2_rounded,
+                                      color: AppTheme.primaryColor,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        'Assets',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: AppTheme.textPrimary(context),
+                                        ),
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.chevron_right_rounded,
+                                      color: AppTheme.iconColor(context),
+                                      size: 20,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
                     // Theme Toggle
                     SlideTransition(
                       position: Tween<Offset>(
@@ -139,8 +272,7 @@ class _AppDrawerState extends State<AppDrawer>
                           child: Material(
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(14),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(14),
+                            child: HoverScale(
                               onTap: () {
                                 themeProvider.toggleTheme();
                                 setState(() {});
@@ -208,8 +340,7 @@ class _AppDrawerState extends State<AppDrawer>
                           child: Material(
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(14),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(14),
+                            child: HoverScale(
                               onTap: () {
                                 final newLocale = themeProvider.locale.languageCode == 'en'
                                     ? const Locale('ar')
@@ -280,11 +411,13 @@ class _AppDrawerState extends State<AppDrawer>
                           child: Material(
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(14),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(14),
+                            child: HoverScale(
                               onTap: () {
-                                Navigator.pop(context);
-                                context.push('/locations');
+                                if (Scaffold.of(context).hasDrawer &&
+                                    Scaffold.of(context).isDrawerOpen) {
+                                  Navigator.pop(context);
+                                }
+                                context.go('/locations');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -335,11 +468,13 @@ class _AppDrawerState extends State<AppDrawer>
                           child: Material(
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(14),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(14),
+                            child: HoverScale(
                               onTap: () {
-                                Navigator.pop(context);
-                                context.push('/licenses');
+                                if (Scaffold.of(context).hasDrawer &&
+                                    Scaffold.of(context).isDrawerOpen) {
+                                  Navigator.pop(context);
+                                }
+                                context.go('/licenses');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -390,11 +525,13 @@ class _AppDrawerState extends State<AppDrawer>
                           child: Material(
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(14),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(14),
+                            child: HoverScale(
                               onTap: () {
-                                Navigator.pop(context);
-                                context.push('/audit');
+                                if (Scaffold.of(context).hasDrawer &&
+                                    Scaffold.of(context).isDrawerOpen) {
+                                  Navigator.pop(context);
+                                }
+                                context.go('/audit');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -445,11 +582,13 @@ class _AppDrawerState extends State<AppDrawer>
                           child: Material(
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(14),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(14),
+                            child: HoverScale(
                               onTap: () {
-                                Navigator.pop(context);
-                                context.push('/map');
+                                if (Scaffold.of(context).hasDrawer &&
+                                    Scaffold.of(context).isDrawerOpen) {
+                                  Navigator.pop(context);
+                                }
+                                context.go('/map');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -500,11 +639,13 @@ class _AppDrawerState extends State<AppDrawer>
                           child: Material(
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(14),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(14),
+                            child: HoverScale(
                               onTap: () {
-                                Navigator.pop(context);
-                                context.push('/requests');
+                                if (Scaffold.of(context).hasDrawer &&
+                                    Scaffold.of(context).isDrawerOpen) {
+                                  Navigator.pop(context);
+                                }
+                                context.go('/requests');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -555,11 +696,13 @@ class _AppDrawerState extends State<AppDrawer>
                           child: Material(
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(14),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(14),
+                            child: HoverScale(
                               onTap: () {
-                                Navigator.pop(context);
-                                context.push('/my_custody');
+                                if (Scaffold.of(context).hasDrawer &&
+                                    Scaffold.of(context).isDrawerOpen) {
+                                  Navigator.pop(context);
+                                }
+                                context.go('/my_custody');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -610,11 +753,13 @@ class _AppDrawerState extends State<AppDrawer>
                           child: Material(
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(14),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(14),
+                            child: HoverScale(
                               onTap: () {
-                                Navigator.pop(context);
-                                context.push('/analytics');
+                                if (Scaffold.of(context).hasDrawer &&
+                                    Scaffold.of(context).isDrawerOpen) {
+                                  Navigator.pop(context);
+                                }
+                                context.go('/analytics');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -665,11 +810,13 @@ class _AppDrawerState extends State<AppDrawer>
                           child: Material(
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(14),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(14),
+                            child: HoverScale(
                               onTap: () {
-                                Navigator.pop(context);
-                                context.push('/handover');
+                                if (Scaffold.of(context).hasDrawer &&
+                                    Scaffold.of(context).isDrawerOpen) {
+                                  Navigator.pop(context);
+                                }
+                                context.go('/handover');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -720,11 +867,10 @@ class _AppDrawerState extends State<AppDrawer>
                           child: Material(
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(14),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(14),
+                            child: HoverScale(
                               onTap: () {
                                 Navigator.pop(context);
-                                context.push('/maintenance');
+                                context.go('/maintenance');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -773,8 +919,7 @@ class _AppDrawerState extends State<AppDrawer>
                           child: Material(
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(14),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(14),
+                            child: HoverScale(
                               onTap: () {
                                 context.pop();
                                 context.push('/qr_scanner');

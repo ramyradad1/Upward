@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../models/request_model.dart';
 import '../services/request_service.dart';
 import '../services/profile_service.dart';
 import '../theme/app_theme.dart';
-import 'create_request_screen.dart';
+
 
 class RequestsScreen extends StatefulWidget {
   const RequestsScreen({super.key});
@@ -44,6 +45,19 @@ class _RequestsScreenState extends State<RequestsScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: AppTheme.textPrimary(context),
+          ),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/dashboard');
+            }
+          },
+        ),
         title: const Text('Requests'),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -67,10 +81,7 @@ class _RequestsScreenState extends State<RequestsScreen>
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const CreateRequestScreen()),
-          );
+          context.push('/requests/create');
         },
         backgroundColor: AppTheme.primaryColor,
         icon: const Icon(Icons.add, color: Colors.white),

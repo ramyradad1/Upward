@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_router/go_router.dart';
 import '../models/location_model.dart';
 import '../models/asset_model.dart';
 import '../services/asset_service.dart';
@@ -95,7 +96,13 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> with Sing
                                   border: Border.all(color: AppTheme.borderColor(context)),
                                 ),
                                 child: IconButton(
-                                  onPressed: () => Navigator.pop(context),
+                                  onPressed: () {
+                                    if (context.canPop()) {
+                                      context.pop();
+                                    } else {
+                                      context.go('/locations');
+                                    }
+                                  },
                                   icon: Icon(Icons.arrow_back_ios_new_rounded, color: AppTheme.textPrimary(context), size: 18),
                                 ),
                               ),

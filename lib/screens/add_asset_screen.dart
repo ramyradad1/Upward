@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
@@ -411,7 +412,13 @@ class _AddAssetScreenState extends State<AddAssetScreen> with SingleTickerProvid
                               border: Border.all(color: AppTheme.borderColor(context)),
                             ),
                             child: IconButton(
-                              onPressed: () => Navigator.pop(context),
+                              onPressed: () {
+                                if (context.canPop()) {
+                                  context.pop();
+                                } else {
+                                  context.go('/dashboard');
+                                }
+                              },
                               icon: Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: AppTheme.textPrimary(context)),
                             ),
                           ),
