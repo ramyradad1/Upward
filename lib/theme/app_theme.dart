@@ -145,7 +145,7 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.light,
       primaryColor: primaryColor,
-      scaffoldBackgroundColor: backgroundLight,
+      scaffoldBackgroundColor: Colors.transparent,
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryColor,
         brightness: Brightness.light,
@@ -192,7 +192,7 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.dark,
       primaryColor: primaryColor,
-      scaffoldBackgroundColor: backgroundDark,
+      scaffoldBackgroundColor: Colors.transparent,
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryColor,
         brightness: Brightness.dark,

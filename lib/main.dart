@@ -163,6 +163,14 @@ class _MyAppState extends State<MyApp> {
       ],
       locale: themeProvider.locale,
       routerConfig: router,
+      builder: (context, child) {
+        return Container(
+          decoration: BoxDecoration(
+            gradient: AppTheme.backgroundGradient(context),
+          ),
+          child: child,
+        );
+      },
     );
   }
 }
