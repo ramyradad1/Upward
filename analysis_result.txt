@@ -1,0 +1,81 @@
+Analyzing stitch_app...                                         
+
+   info - The private field _deviceImages could be 'final' - lib\screens\add_asset_screen.dart:56:15 - prefer_final_fields
+   info - 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor or activeTrackColor instead. This feature was deprecated after v3.31.0-2.0.pre - lib\screens\add_asset_screen.dart:722:35 - deprecated_member_use
+   info - Unnecessary use of multiple underscores - lib\screens\add_asset_screen.dart:1044:37 - unnecessary_underscores
+warning - A value for optional parameter 'duration' isn't ever given - lib\screens\admin_dashboard_screen.dart:538:10 - unused_element_parameter
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:216:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:221:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:252:73 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:259:50 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:278:56 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:310:56 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:368:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:371:26 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:382:28 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:413:32 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:437:65 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:439:49 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:446:54 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:465:60 - deprecated_member_use
+   info - Unnecessary use of multiple underscores - lib\screens\asset_details_screen.dart:537:31 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\screens\asset_details_screen.dart:567:38 - unnecessary_underscores
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\asset_details_screen.dart:675:48 - use_build_context_synchronously
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:787:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:821:37 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:823:56 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:861:50 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:866:65 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\asset_details_screen.dart:876:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\audit_screen.dart:185:28 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\audit_screen.dart:187:47 - deprecated_member_use
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\screens\audit_screen.dart:309:17 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\audit_screen.dart:345:58 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\audit_screen.dart:367:41 - deprecated_member_use
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\screens\create_request_screen.dart:247:7 - deprecated_member_use
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\screens\create_request_screen.dart:292:7 - deprecated_member_use
+   info - 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor or activeTrackColor instead. This feature was deprecated after v3.31.0-2.0.pre - lib\screens\create_user_screen.dart:629:9 - deprecated_member_use
+   info - Statements in an if should be enclosed in a block - lib\screens\edit_asset_screen.dart:113:40 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\screens\edit_asset_screen.dart:114:45 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\screens\edit_asset_screen.dart:115:43 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\screens\edit_asset_screen.dart:116:43 - curly_braces_in_flow_control_structures
+   info - 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor or activeTrackColor instead. This feature was deprecated after v3.31.0-2.0.pre - lib\screens\edit_asset_screen.dart:807:35 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\edit_asset_screen.dart:1047:40 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\edit_asset_screen.dart:1050:33 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\edit_asset_screen.dart:1054:40 - use_build_context_synchronously
+   info - Unnecessary use of multiple underscores - lib\screens\location_details_screen.dart:264:61 - unnecessary_underscores
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\location_details_screen.dart:293:65 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\location_details_screen.dart:296:50 - deprecated_member_use
+   info - Unnecessary use of multiple underscores - lib\screens\location_details_screen.dart:332:46 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\screens\location_details_screen.dart:333:46 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\screens\location_details_screen.dart:333:50 - unnecessary_underscores
+warning - A value for optional parameter 'key' isn't ever given - lib\screens\login_screen.dart:383:25 - unused_element_parameter
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\manage_users_screen.dart:423:35 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\manage_users_screen.dart:425:44 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\manage_users_screen.dart:434:44 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\manage_users_screen.dart:488:32 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\manage_users_screen.dart:497:32 - use_build_context_synchronously
+   info - Unnecessary use of multiple underscores - lib\screens\my_custody_screen.dart:134:41 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\screens\my_custody_screen.dart:134:45 - unnecessary_underscores
+warning - Unused import: 'package:supabase_flutter/supabase_flutter.dart' - lib\services\audit_service.dart:3:8 - unused_import
+warning - Unused import: '../models/asset_model.dart' - lib\services\audit_service.dart:6:8 - unused_import
+   info - Don't invoke 'print' in production code - lib\services\license_service.dart:42:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\license_service.dart:58:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\license_service.dart:74:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\license_service.dart:90:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\license_service.dart:105:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\license_service.dart:120:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\license_service.dart:142:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\license_service.dart:160:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\license_service.dart:171:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\license_service.dart:189:7 - avoid_print
+warning - Unused import: '../models/license_model.dart' - lib\services\offline_service.dart:7:8 - unused_import
+warning - The value of the field '_licensesBox' isn't used - lib\services\offline_service.dart:19:19 - unused_field
+   info - Unnecessary use of multiple underscores - lib\widgets\asset_card.dart:111:52 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\widgets\asset_card.dart:126:52 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\widgets\asset_card.dart:126:56 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\widgets\upload_card.dart:139:30 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\widgets\upload_card.dart:148:30 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\widgets\upload_card.dart:148:34 - unnecessary_underscores
+
+77 issues found. (ran in 105.4s)
