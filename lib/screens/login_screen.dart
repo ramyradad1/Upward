@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/custom_text_field.dart';
 import '../l10n/app_localizations.dart';
-import 'dashboard_screen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -93,10 +94,7 @@ class _LoginScreenState extends State<LoginScreen>
       );
 
       if (mounted && response.session != null) {
-        Navigator.pushReplacement(
-          context,
-          AppTheme.slideRoute(const DashboardScreen()),
-        );
+        context.go('/dashboard');
       }
     } on AuthException catch (e) {
       if (mounted) _showSnack(e.message, isError: true);
@@ -178,7 +176,9 @@ class _LoginScreenState extends State<LoginScreen>
                                     padding: const EdgeInsets.all(40), // More breathing room
                                     child: ClipOval(
                                       child: Image.asset(
-                                        'assets/images/BlackLogo.png',
+                                        isDark
+                                            ? 'assets/images/WhiteLogo.png'
+                                            : 'assets/images/BlackLogo.png',
                                         fit: BoxFit.contain,
                                       ),
                                     ),

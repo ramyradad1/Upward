@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../theme/app_theme.dart';
 import '../services/auth_service.dart';
 import '../services/company_service.dart';
-import 'login_screen.dart';
-import 'create_user_screen.dart';
-import 'manage_companies_screen.dart';
-import 'manage_users_screen.dart';
 import '../services/employee_service.dart';
-import 'dashboard_screen.dart';
+
 
 class AdminDashboardScreen extends StatefulWidget {
   const AdminDashboardScreen({super.key});
@@ -43,11 +40,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
   Future<void> _signOut(BuildContext context) async {
     await AuthService.signOut();
     if (context.mounted) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        AppTheme.slideRoute(const LoginScreen()),
-        (route) => false,
-      );
+      context.go('/login');
     }
   }
 
@@ -318,10 +311,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           title: 'Manage Companies',
                           subtitle: 'View, create and edit companies',
                           color: Colors.blue,
-                          onTap: () => Navigator.push(
-                            context,
-                            AppTheme.slideRoute(const ManageCompaniesScreen()),
-                          ),
+                          onTap: () => context.push('/admin/companies'),
                         ),
                         const SizedBox(height: 16),
                         _buildAnimatedActionCard(
@@ -330,10 +320,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           title: 'Manage Users',
                           subtitle: 'View and manage employees',
                           color: Colors.orange,
-                          onTap: () => Navigator.push(
-                            context,
-                            AppTheme.slideRoute(const ManageUsersScreen()),
-                          ),
+                          onTap: () => context.push('/admin/users'),
                         ),
                         const SizedBox(height: 16),
                         _buildAnimatedActionCard(
@@ -342,10 +329,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           title: 'Create User',
                           subtitle: 'Add new admin or employee',
                           color: Colors.purple,
-                          onTap: () => Navigator.push(
-                            context,
-                            AppTheme.slideRoute(const CreateUserScreen()),
-                          ),
+                          onTap: () => context.push('/admin/users/create'),
                         ),
                         const SizedBox(height: 16),
                         _buildAnimatedActionCard(
@@ -354,10 +338,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           title: 'Asset Dashboard',
                           subtitle: 'Go to main asset view',
                           color: Colors.teal,
-                          onTap: () => Navigator.pushReplacement(
-                            context,
-                            AppTheme.slideRoute(const DashboardScreen()),
-                          ),
+                          onTap: () => context.go('/dashboard'),
                         ),
                         const SizedBox(height: 40),
                       ]),

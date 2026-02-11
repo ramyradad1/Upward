@@ -1,21 +1,19 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../utils/responsive_layout.dart';
 import '../models/asset_model.dart';
 import '../widgets/asset_card.dart';
 import '../widgets/filter_pill.dart';
 import '../theme/app_theme.dart';
 import '../services/asset_service.dart';
-import 'add_asset_screen.dart';
-import 'edit_asset_screen.dart';
-import 'admin_dashboard_screen.dart';
-import 'asset_details_screen.dart';
+
 import '../services/auth_service.dart';
 import '../widgets/app_drawer.dart';
-import '../screens/notifications_screen.dart';
+
 import '../services/notification_service.dart';
 import '../l10n/app_localizations.dart';
-import 'qr_scanner_screen.dart';
+
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -125,17 +123,11 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   Future<void> _editAsset(AssetModel asset) async {
-    await Navigator.push(
-      context,
-      AppTheme.slideRoute(EditAssetScreen(asset: asset)),
-    );
+    await context.push('/assets/edit', extra: asset);
   }
 
   Future<void> _showAssetDetails(AssetModel asset) async {
-    await Navigator.push(
-      context,
-      AppTheme.slideRoute(AssetDetailsScreen(asset: asset)),
-    );
+    await context.push('/assets/details', extra: asset);
   }
 
   Future<void> _deleteAsset(AssetModel asset) async {
@@ -223,10 +215,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               onPressed: () async {
                 if (passwordController.text == '0000') {
                   Navigator.pop(ctx);
-                  Navigator.push(
-                    context,
-                    AppTheme.slideRoute(const AdminDashboardScreen()),
-                  );
+                  context.push('/admin');
                   return;
                 }
 
@@ -241,10 +230,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
                   if (response.session != null && mounted) {
                     navigator.pop();
-                    Navigator.push(
-                      context,
-                      AppTheme.slideRoute(const AdminDashboardScreen()),
-                    );
+                    context.push('/admin');
                   }
                 } catch (e) {
                   messenger.showSnackBar(
@@ -328,10 +314,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     child: FloatingActionButton(
                       heroTag: 'qr_fab',
                       onPressed: () async {
-                        await Navigator.push(
-                          context,
-                          AppTheme.slideRoute(const QrScannerScreen()),
-                        );
+                        await context.push('/qr_scanner');
                       },
                       backgroundColor: AppTheme.surfaceColor(context),
                       elevation: 0,
@@ -357,10 +340,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     child: FloatingActionButton(
                       heroTag: 'add_fab',
                       onPressed: () async {
-                        await Navigator.push(
-                          context,
-                          AppTheme.slideRoute(const AddAssetScreen()),
-                        );
+                        await context.push('/assets/add');
                       },
                       backgroundColor: Colors.transparent,
                       elevation: 0,
@@ -462,10 +442,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                         // Notification Bell
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              AppTheme.slideRoute(const NotificationsScreen()),
-                            );
+                            context.push('/notifications');
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -709,10 +686,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     // Action Buttons
                     ElevatedButton.icon(
                       onPressed: () async {
-                        await Navigator.push(
-                          context,
-                          AppTheme.slideRoute(const AddAssetScreen()),
-                        );
+                        await context.push('/assets/add');
                       },
                       icon: const Icon(Icons.add_rounded),
                       label: const Text('Add Asset'),
@@ -925,10 +899,7 @@ class _DashboardScreenState extends State<DashboardScreen>
             if (_searchQuery.isEmpty)
               TextButton(
                 onPressed: () async {
-                  await Navigator.push(
-                    context,
-                    AppTheme.slideRoute(const AddAssetScreen()),
-                  );
+                  await context.push('/assets/add');
                 },
                 style: TextButton.styleFrom(
                   foregroundColor: AppTheme.primaryColor,

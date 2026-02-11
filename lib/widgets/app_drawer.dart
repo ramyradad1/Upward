@@ -1,19 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../theme/app_theme.dart';
 import '../main.dart';
 import '../services/company_service.dart';
 import '../services/auth_service.dart';
-import '../screens/login_screen.dart';
-import '../screens/locations_screen.dart';
-import '../screens/licenses_screen.dart';
-import '../screens/audit_history_screen.dart';
-import '../screens/map_view_screen.dart';
-import '../screens/requests_screen.dart';
-import '../screens/my_custody_screen.dart';
-import '../screens/analytics_screen.dart';
-import '../screens/handover_screen.dart';
-import '../screens/qr_scanner_screen.dart';
-import '../screens/maintenance_screen.dart';
+
 import '../l10n/app_localizations.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -293,10 +284,7 @@ class _AppDrawerState extends State<AppDrawer>
                               borderRadius: BorderRadius.circular(14),
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  AppTheme.slideRoute(const LocationsScreen()),
-                                );
+                                context.push('/locations');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -351,10 +339,7 @@ class _AppDrawerState extends State<AppDrawer>
                               borderRadius: BorderRadius.circular(14),
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  AppTheme.slideRoute(const LicensesScreen()),
-                                );
+                                context.push('/licenses');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -409,10 +394,7 @@ class _AppDrawerState extends State<AppDrawer>
                               borderRadius: BorderRadius.circular(14),
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  AppTheme.slideRoute(const AuditHistoryScreen()),
-                                );
+                                context.push('/audit');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -467,10 +449,7 @@ class _AppDrawerState extends State<AppDrawer>
                               borderRadius: BorderRadius.circular(14),
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  AppTheme.slideRoute(const MapViewScreen()),
-                                );
+                                context.push('/map');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -525,10 +504,7 @@ class _AppDrawerState extends State<AppDrawer>
                               borderRadius: BorderRadius.circular(14),
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  AppTheme.slideRoute(const RequestsScreen()),
-                                );
+                                context.push('/requests');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -583,10 +559,7 @@ class _AppDrawerState extends State<AppDrawer>
                               borderRadius: BorderRadius.circular(14),
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  AppTheme.slideRoute(const MyCustodyScreen()),
-                                );
+                                context.push('/my_custody');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -641,10 +614,7 @@ class _AppDrawerState extends State<AppDrawer>
                               borderRadius: BorderRadius.circular(14),
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  AppTheme.slideRoute(const AnalyticsScreen()),
-                                );
+                                context.push('/analytics');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -699,10 +669,7 @@ class _AppDrawerState extends State<AppDrawer>
                               borderRadius: BorderRadius.circular(14),
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  AppTheme.slideRoute(const HandoverScreen()),
-                                );
+                                context.push('/handover');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -757,10 +724,7 @@ class _AppDrawerState extends State<AppDrawer>
                               borderRadius: BorderRadius.circular(14),
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  AppTheme.slideRoute(const MaintenanceScreen()),
-                                );
+                                context.push('/maintenance');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -812,11 +776,8 @@ class _AppDrawerState extends State<AppDrawer>
                             child: InkWell(
                               borderRadius: BorderRadius.circular(14),
                               onTap: () {
-                                Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  AppTheme.slideRoute(const QrScannerScreen()),
-                                );
+                                context.pop();
+                                context.push('/qr_scanner');
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -986,10 +947,7 @@ class _AppDrawerState extends State<AppDrawer>
                               onTap: () async {
                                 await AuthService.signOut();
                                 if (context.mounted) {
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                    AppTheme.slideRoute(const LoginScreen()),
-                                    (route) => false,
-                                  );
+                                  context.go('/login');
                                 }
                               },
                               child: Container(

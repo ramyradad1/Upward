@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../models/maintenance_model.dart';
 import '../services/maintenance_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/animated_app_logo.dart';
-import 'add_maintenance_screen.dart';
+
 
 class MaintenanceScreen extends StatefulWidget {
   const MaintenanceScreen({super.key});
@@ -65,10 +66,7 @@ class _MaintenanceScreenState extends State<MaintenanceScreen>
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.push(
-          context,
-          AppTheme.slideRoute(const AddMaintenanceScreen()),
-        ),
+        onPressed: () => context.push('/maintenance/add'),
         icon: const Icon(Icons.add_rounded),
         label: const Text('New Schedule', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: AppTheme.primaryColor,
@@ -85,7 +83,7 @@ class _MaintenanceScreenState extends State<MaintenanceScreen>
         child: Row(
           children: [
             IconButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => context.pop(),
               icon: Icon(Icons.arrow_back_ios_new_rounded,
                   color: AppTheme.textPrimary(context)),
               style: IconButton.styleFrom(
@@ -340,6 +338,8 @@ class _ScheduleCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Status bar
+              // Status bar
+
               Row(
                 children: [
                   Container(
@@ -379,6 +379,19 @@ class _ScheduleCard extends StatelessWidget {
                       color: _priorityColor(),
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  InkWell(
+                    onTap: () => _confirmDelete(context),
+                    borderRadius: BorderRadius.circular(20),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Icon(
+                        Icons.delete_outline_rounded,
+                        size: 20,
+                        color: AppTheme.textSecondary(context),
+                      ),
                     ),
                   ),
                 ],
@@ -467,6 +480,32 @@ class _ScheduleCard extends StatelessWidget {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => _ScheduleDetailSheet(schedule: schedule),
+    );
+  }
+
+  void _confirmDelete(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Delete Schedule'),
+        content: Text('Delete "${schedule.title}"? This cannot be undone.'),
+        actions: [
+          TextButton(
+            onPressed: () => context.pop(),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              await MaintenanceService.deleteSchedule(schedule.id);
+              if (ctx.mounted) context.pop();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFEF4444),
+            ),
+            child: const Text('Delete', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -660,7 +699,7 @@ class _ScheduleDetailSheet extends StatelessWidget {
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () {
-                        Navigator.pop(context);
+                        context.pop();
                         _confirmDelete(context);
                       },
                       icon: const Icon(Icons.delete_outline_rounded, color: Color(0xFFEF4444)),
@@ -677,13 +716,8 @@ class _ScheduleDetailSheet extends StatelessWidget {
                     flex: 2,
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          AppTheme.slideRoute(AddMaintenanceScreen(
-                            logForSchedule: schedule,
-                          )),
-                        );
+                        context.pop();
+                        context.push('/maintenance/add', extra: schedule);
                       },
                       icon: const Icon(Icons.check_circle_rounded),
                       label: const Text('Log Maintenance',
@@ -747,13 +781,13 @@ class _ScheduleDetailSheet extends StatelessWidget {
         content: Text('Delete "${schedule.title}"? This cannot be undone.'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(ctx),
+            onPressed: () => context.pop(),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () async {
               await MaintenanceService.deleteSchedule(schedule.id);
-              if (ctx.mounted) Navigator.pop(ctx);
+              if (ctx.mounted) context.pop();
             },
             style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFEF4444)),
             child: const Text('Delete', style: TextStyle(color: Colors.white)),
